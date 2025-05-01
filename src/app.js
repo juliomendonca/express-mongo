@@ -1,10 +1,7 @@
 import express from 'express';
-import dotenv from 'dotenv';
 
 import connectDB from './config/dbconnect.js';
 import livro from './models/Livro.js';
-
-dotenv.config();
 
 const conexao = await connectDB();
 
