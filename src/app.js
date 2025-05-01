@@ -1,31 +1,32 @@
 import express from 'express';
+import dotenv from 'dotenv';
+
+import connectDB from './config/dbconnect.js';
+import livro from './models/Livro.js';
+
+dotenv.config();
+
+const conexao = await connectDB();
+
+conexao.on("error", (err) => {
+    console.log("Erro de conexão: " + err);
+});
+
+conexao.once("open", () => {
+    console.log("Banco de dados conectado com sucesso!");
+});
 
 const app = express();
 app.use(express.json());
 
-const livros = [
-    {
-        id: 1,
-        titulo: "O Senhor dos Anéis"
-    },
-    {
-        id: 2,
-        titulo: "O Hobbit"
-    }
-];
-
-function buscaLivro(id) {
-    return livros.findIndex(livro => {
-        return livro.id === Number(id);
-    });
-}
 
 app.get("/", (req, res) => {
     res.status(200).send("Curso de Noje.js");
 });
 
-app.get("/livros", (req, res) => {
-    res.status(200).json(livros);
+app.get("/livros", async (req, res) => {
+    const listaLivros = await livro.find({});
+    res.status(200).json(listaLivros);
 });
 
 app.get("/livros/:id", (req, res) => {
